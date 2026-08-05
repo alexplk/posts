@@ -1,0 +1,9 @@
+{
+  "name": "posts",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Drop-in files published to https://alexplk.github.io/posts/",
+  "scripts": {
+    "publish": "node scripts/publish.mjs"
+  }
+}
