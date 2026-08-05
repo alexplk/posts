@@ -15,6 +15,7 @@ import {
   readdirSync,
   mkdirSync,
   writeFileSync,
+  readFileSync,
 } from "node:fs";
 import { basename, resolve, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -41,8 +42,29 @@ function writeIndex() {
     .filter((name) => statSync(resolve(repoRoot, name)).isFile())
     .sort((a, b) => a.localeCompare(b));
 
+  const esc = (s) =>
+    s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+
+  // For .md files, use a leading `# Title` line (any number of hashes) as the
+  // link text; otherwise fall back to the filename.
+  const titleFor = (f) => {
+    if (!f.toLowerCase().endsWith(".md")) return f;
+    try {
+      const first = readFileSync(resolve(repoRoot, f), "utf8").split(/\r?\n/)[0];
+      const m = first.match(/^\s*#+\s+(.+?)\s*$/);
+      if (m) return m[1];
+    } catch {
+      /* unreadable — fall back to filename */
+    }
+    return f;
+  };
+
   const rows = files.length
-    ? files.map((f) => `    <li><a href="../${f}">${f}</a></li>`).join("\n")
+    ? files
+        .map(
+          (f) => `    <li><a href="../${f}">${esc(titleFor(f))}</a></li>`,
+        )
+        .join("\n")
     : "    <li><em>No files yet.</em></li>";
 
   const html = `<!doctype html>
