@@ -18,8 +18,8 @@ npm run publish notes.md bundle.zip
 # Already copied the file into this folder yourself? Just:
 npm run publish
 
-# Custom commit message:
-npm run publish notes.md -m "add release notes"
+# Custom commit message (note the `--` before -m, npm requires it):
+npm run publish notes.md -- -m "add release notes"
 ```
 
 Each publish prints the live URL(s). Pages usually updates within a minute.

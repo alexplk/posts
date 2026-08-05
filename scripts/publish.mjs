@@ -3,7 +3,8 @@
 //
 //   npm run publish                         -> stage everything, commit, push
 //   npm run publish ~/Downloads/thing.md    -> copy file(s) into the repo, then publish
-//   npm run publish a.md b.zip -m "message" -> copy files + custom commit message
+//   npm run publish a.md b.zip -- -m "msg"  -> copy files + custom commit message
+//                                              (npm needs the `--` before -m)
 //
 // Anything not preceded by -m is treated as a file to copy into the repo root.
 import { execFileSync } from "node:child_process";
